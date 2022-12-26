@@ -1,0 +1,12 @@
+# pvc-nfs.yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc-test
+spec:
+  storageClassName: nfs-csi
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 10Gi

@@ -1,0 +1,17 @@
+[$GROUP_MASTER]
+$SERVER_IP_01
+$SERVER_IP_02
+$SERVER_IP_03
+...
+
+[$GROUP_WORKER]
+$SERVER_IP_01
+$SERVER_IP_02
+$SERVER_IP_03
+...
+
+[$GROUP:vars]
+ansible_connection=ssh
+ansible_ssh_user=$SERVER_USER
+ansible_ssh_port=$SERVER_PORT
+ansible_sudo_pass=$SERVER_PASSWORD

@@ -1,0 +1,58 @@
+---
+- name: "DNS Addon"
+  shell: 'microk8s enable dns'
+  become: true
+
+# LOAD BALANCER
+
+- name: "Installing Load Balancer addon"
+  shell: microk8s enable metallb:{{ metallb_range_ip }}
+  become: true
+
+- name: 'Metrics API Addon'
+  shell: 'microk8s enable metrics-server'
+  become: true
+
+- name: 'GPU Addon'
+  shell: 'microk8s enable gpu'
+  become: true
+  
+- name: 'Helm3 Addon'
+  shell: 'microk8s enable helm3'
+  become: true
+
+  # NFS
+
+- name: "nfs-common dependency"
+  apt:
+    name: nfs-common
+    state: latest
+    update_cache: true
+
+- name: "NFS Setup"
+  script: ../scripts/helm-nfs.sh # Executar manualmente em caso de falha
+  ignore_errors: yes
+
+# - name: "Adding NFS repo to Helm3"
+#   shell: |
+#     microk8s helm3 repo add \
+#     csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+#   become: true
+
+# - name: "Updating local Helm3 repo"
+#   shell: microk8s helm3 repo update
+#   become: true
+
+# - name: "Installing NFS driver"
+#   shell: |
+#     microk8s helm3 install csi-driver-nfs csi-driver-nfs/csi-driver-nfs \
+#         --namespace kube-system \
+#         --set kubeletDir=/var/snap/microk8s/common/var/lib/kubelet
+#   become: true
+
+# - name: "Deploy of NFS driver"
+#   shell: |
+#     microk8s kubectl wait pod \
+#         --selector app.kubernetes.io/name=csi-driver-nfs \
+#         --for condition=ready --namespace kube-system
+#   become: true

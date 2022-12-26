@@ -1,0 +1,17 @@
+- name: "Setting Timezone"
+  import_tasks: timezone.yml
+
+- name: "Updating and Upgrading packages"
+  import_tasks: update-upgrade.yml
+
+# - name: "Install docker"
+#   import_tasks: docker-install.yml
+
+- name: "Install microk8s"
+  import_tasks: microk8s-install.yml
+
+- name: "Microk8s addons"
+  import_tasks: microk8s-addons.yml
+
+- name: "Configuring Jupyterhub"
+  import_tasks: jupyter-hub.yml

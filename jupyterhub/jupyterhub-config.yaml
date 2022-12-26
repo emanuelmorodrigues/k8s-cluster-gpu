@@ -1,0 +1,95 @@
+proxy:
+  # https:
+  #   enabled: true
+  #   hosts:
+  #     - aiuaba.quixada.ufc.br
+  #   letsencrypt:
+  #     # Uncomment acmeserver for a test certificate
+  #     # acmeServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+  #     # This email gets warnings if auto-renewal fails
+  #     contactEmail: manel_mr@alu.ufc.br
+  secretToken: # This can be generated with `openssl rand -hex 32`
+  service:
+    type: LoadBalancer
+    labels: {}
+    annotations: {}
+    nodePorts:
+      http: 30080 
+      https: 30443
+    loadBalancerIP: <to_fill> 
+
+singleuser:
+  # Use new UI by default as the old UI is being deprecated
+  #  defaultUrl: "/lab"
+  defaultUrl: "/lab"
+
+  storage:
+    type: dynamic
+    capacity: 30Gi
+    homeMountPath: /home/jovyan/
+    dynamic:
+      storageClass: nfs-csi
+      pvcNameTemplate: claim-{username}{servername}
+      volumeNameTemplate: volume-{username}{servername}
+      storageAccessModes: [ReadWriteOnce]
+
+  # Default profile, this is what the placeholders will use
+  # startTimeout: 1200 # seconds == 20 minutes
+  cpu:
+    limit: 2
+    guarantee: 1
+  memory:
+    limit: 4G
+    guarantee: 2G
+
+  profileList:
+  - display_name: "Simple Datascience environment"
+    defaultUrl: "/hub/simple"
+    description: "Faça seus estudos e execute seus modelos sem GPU."
+    default: true
+    kubespawner_override:
+      image: jupyter/datascience-notebook
+      cpu_limit: 4
+      cpu_guarantee: 2
+      mem_limit: "16G"
+      mem_guarantee: "8G"
+  - display_name: "Hard Datascience environment"
+    defaultUrl: "/hub/hard"
+    description: "Faça seus estudos e execute seus modelos com GPU."
+    kubespawner_override:
+      image: jupyter/tensorflow-notebook
+      cpu_limit: 8
+      cpu_guarantee: 4
+      mem_limit: "32G"
+      mem_guarantee: "16G"
+      extra_resource_limits:
+        nvidia.com/gpu: "1"
+
+hub:
+  config:
+    Authenticator:
+      admin_users:
+        - admin
+      check_common_password: true
+      open_signup: true
+    JupyterHub:
+      authenticator_class: nativeauthenticator.NativeAuthenticator
+
+scheduling:
+  # Try to pack users tightly rather than spinning up one node per user
+  userScheduler:
+    enabled: true
+#   # Enable us to evict a placeholder rather than spin up a whole new node
+#   podPriority:
+#     enabled: true
+#     defaultPriority: 0
+#     userPlaceholderPriority: -10 # -10 is equal to scale up criteria
+#   # Prep some environments beforehand so users don't have to wait
+#   userPlaceholder:
+#     enabled: true
+#     replicas: 4 # Number of placeholders, this should eq high mem / default mem
+
+# cull:
+#   enabled: true
+#   timeout: 86400 # seconds == 1 day
+#   every: 300 # 5 minutes

@@ -1,0 +1,14 @@
+---
+- name: Setup Jupyterhub on Master
+  hosts: master
+  become: yes
+  roles:
+    - master_config
+  vars:
+    metallb_range_ip: <to_fill>
+
+- name: Setup Jupyterhub on Workers
+  hosts: worker
+  become: yes
+  roles:
+    - worker_config

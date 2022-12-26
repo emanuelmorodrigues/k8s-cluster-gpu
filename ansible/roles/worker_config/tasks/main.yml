@@ -1,0 +1,8 @@
+- name: "Setting Timezone"
+  import_tasks: timezone.yml
+
+- name: "Updating and Upgrading packages"
+  import_tasks: update-upgrade.yml
+
+- name: "Install microk8s"
+  import_tasks: microk8s-install.yml

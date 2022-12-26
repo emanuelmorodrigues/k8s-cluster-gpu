@@ -1,0 +1,31 @@
+- name: Install microk8s
+  snap:
+    name: microk8s
+    classic: yes
+  become: true
+
+- name: "Add user to Docker and Microk8s groups, they will need to logout and in again"
+  user:
+    name: insightlab
+    state: present
+    groups:
+      # - docker
+      - microk8s
+    append: true
+
+- name: "Add alias to kubectl"
+  become: true
+  lineinfile:
+    path: '/home/insightlab/.bashrc'
+    regexp: '^alias kubectl='
+    line: 'alias kubectl="microk8s kubectl"'
+    state: present
+
+- name: "Add bash completion for kubectl"
+  become: true
+  lineinfile:
+    path: '/home/insightlab/.bashrc'
+    regexp: '^source \<\(kubectl'
+    line: 'source <(kubectl completion bash)'
+    state: present
+
