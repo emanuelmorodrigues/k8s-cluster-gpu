@@ -14,4 +14,4 @@
 
 - name: "Adding Jupyter on Repo's Helm"
   script: ../scripts/helm-jupyter.sh # Executar manualmente em caso de falha
-  ignore_errors: yes
+  ignore_errors: true

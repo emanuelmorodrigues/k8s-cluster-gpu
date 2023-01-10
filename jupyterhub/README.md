@@ -38,7 +38,7 @@ As labels `http` e `https` representam as portas web que serão acessíveis para
 
 ---
 
-2. <p id="auth">Admin Users</p>
+2. <p id="auth">Authenticator</p>
 
 ```yaml
 hub:
@@ -52,7 +52,7 @@ hub:
       authenticator_class: nativeauthenticator.NativeAuthenticator
 
 ```
-A label `admin_users` configura o usuário que terá privilégios de admin. Você pode passar uma lista de usuários administradores. Esses usuários podem fazer o cadastro através da interface do JupyteHub.
+A label `Authenticator` cuida das configurações de Autenticação de usuários comuns ou adminstradores.
 
 ---
 
@@ -108,7 +108,7 @@ A label `admin_users` configura o usuário que terá privilégios de admin. Voc�
 
 A label `singleuser` irá definir todos os recursos da instância de um pod. Passando pelo storage, cpu, ram e profiles que são listas de opções de pods que podem ser instanciados a depender da atividade no Jupyterhub.
 
-O comando abaixo irá aplicar as configurações e instanciar os pods necessários para aplicação
+O comando abaixo irá aplicar as configurações e instanciar os pods necessários para aplicação.
 
 
 ```shell

@@ -31,7 +31,7 @@
 
 - name: "NFS Setup"
   script: ../scripts/helm-nfs.sh # Executar manualmente em caso de falha
-  ignore_errors: yes
+  ignore_errors: true
 
 # - name: "Adding NFS repo to Helm3"
 #   shell: |
