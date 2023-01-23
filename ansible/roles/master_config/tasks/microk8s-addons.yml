@@ -29,30 +29,19 @@
     state: latest
     update_cache: true
 
-- name: "NFS Setup"
-  script: ../scripts/helm-nfs.sh # Executar manualmente em caso de falha
-  ignore_errors: true
+- name: "Adding NFS repo to Helm3"
+  shell: |
+    microk8s helm3 repo add \
+    csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+  become_user: insightlab
 
-# - name: "Adding NFS repo to Helm3"
-#   shell: |
-#     microk8s helm3 repo add \
-#     csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
-#   become: true
+- name: "Updating local Helm3 repo"
+  shell: microk8s helm3 repo update
+  become_user: insightlab
 
-# - name: "Updating local Helm3 repo"
-#   shell: microk8s helm3 repo update
-#   become: true
-
-# - name: "Installing NFS driver"
-#   shell: |
-#     microk8s helm3 install csi-driver-nfs csi-driver-nfs/csi-driver-nfs \
-#         --namespace kube-system \
-#         --set kubeletDir=/var/snap/microk8s/common/var/lib/kubelet
-#   become: true
-
-# - name: "Deploy of NFS driver"
-#   shell: |
-#     microk8s kubectl wait pod \
-#         --selector app.kubernetes.io/name=csi-driver-nfs \
-#         --for condition=ready --namespace kube-system
-#   become: true
+- name: "Installing NFS driver"
+  shell: |
+    microk8s helm3 upgrade -i csi-driver-nfs csi-driver-nfs/csi-driver-nfs \
+        --namespace kube-system \
+        --set kubeletDir=/var/snap/microk8s/common/var/lib/kubelet
+  become_user: insightlab

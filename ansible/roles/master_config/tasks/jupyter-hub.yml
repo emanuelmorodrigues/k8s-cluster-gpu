@@ -1,17 +1,13 @@
-# - name: "Adding Jupyterhub repository to Helm3"
-#   shell: |
-#     microk8s helm3 repo add \ 
-#     jupyterhub https://jupyterhub.github.io/helm-chart/
-#   become: true
+- name: "Adding Jupyterhub repository to Helm3"
+  shell: |
+    microk8s helm3 repo add \ 
+    jupyterhub https://jupyterhub.github.io/helm-chart/
+  become_user: insightlab
 
-# - name: "Updating local Helm3 repo"
-#   shell: microk8s helm3 repo update
-#   become: true
+- name: "Updating local Helm3 repo"
+  shell: microk8s helm3 repo update
+  become_user: insightlab
 
-# - name: "Creating the namespace to Jupyterhub"
-#   shell: microk8s kubectl create namespace jhub
-#   become: true
-
-- name: "Adding Jupyter on Repo's Helm"
-  script: ../scripts/helm-jupyter.sh # Executar manualmente em caso de falha
-  ignore_errors: true
+- name: "Creating the namespace to Jupyterhub"
+  shell: microk8s kubectl create namespace jhub
+  become_user: insightlab

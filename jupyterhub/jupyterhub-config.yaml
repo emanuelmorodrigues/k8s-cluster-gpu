@@ -2,7 +2,7 @@ proxy:
   # https:
   #   enabled: true
   #   hosts:
-  #     - aiuaba.quixada.ufc.br
+  #     - <to_fill>
   #   letsencrypt:
   #     # Uncomment acmeserver for a test certificate
   #     # acmeServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
